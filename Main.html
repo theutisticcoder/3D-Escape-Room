@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html style="background-color: black; text-align: center; zoom: 250%">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>3D Escape Room</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <script src="script.js"></script>
+	<a href="https://3d-escape-room-level-1.the-paperpaper.repl.co/" style="color: white;">Level 1</a>
+	<a href="https://3d-escape-room-level-1.the-paperpaper.repl.co/" style="color: white;">Level 2</a>
+	<a href="https://3d-escape-room-level-3.the-paperpaper.repl.co" style="color: white;">Level 3</a>
+	<a href="https://3d-escape-room-level-4.the-paperpaper.repl.co" style="color: white;">Level 4</a>
+	<br>
+	<a href="https://3d-escape-room-level-1.the-paperpaper.repl.co/" style="color: white;"><img src="Level1.png" height="50px" width="50px"></a>
+	<a href="https://3d-escape-room-level-1.the-paperpaper.repl.co/" style="color: white;"><img src="Level2.png" height="50px" width="50px"></a>
+	<a href="https://3d-escape-room-level-3.the-paperpaper.repl.co/" style="color: white;"><img width="50px" height="50px" src="Level3.jpg"></a>
+	<a href="https://3d-escape-room-level-4.the-paperpaper.repl.co/" style="color: white;"><img width="50px" height="50px" src="Level4.png"></a>
+	<br>
+	<a style="color: white;" onclick="randomLevel()">Choose For Me</a>
+	<br>
+	<a style="color: white;" onclick="randomLevel()"><img height="150px" width="200px" src="choose.jpg"></a>
+
+	<script>
+		function randomLevel(){
+			var urlArray = [
+    "https://3d-escape-room-level-1.the-paperpaper.repl.co",
+    "https://3d-escape-room-level-2.the-paperpaper.repl.co",
+    "https://3d-escape-room-level-3.the-paperpaper.repl.co",
+				"https://3d-escape-room-level-4.the-paperpaper.repl.co"
+];
+    var randomNumber = Math.floor(Math.random() * urlArray.length);
+    var newUrl = urlArray[randomNumber];
+    window.location.href = newUrl;
+}
+	</script>
+</body>
+
+</html>
