@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>3D Escape Room Level 4</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist model-viewer.min.js"></script>
+	<script nomodule src="https://unpkg.com/@google/model-viewer@0.5.1/dist/model-viewer-legacy.js"> </script>
+<style>
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+	}
+
+	body {
+		background: url(Sky.jpg);
+		overflow: hidden;
+	}
+
+	#mainDiv {
+		width: 500px;
+		height: 500px;
+		margin: 200px auto;
+		perspective: 800px;
+	}
+
+	#boxDiv {
+		width: 500px;
+		height: 500px;
+		border: solid 3pt black;
+		transform-style: preserve-3d;
+		transform: translateZ(6000px);
+	}
+
+	#boxDiv div {
+		width: 500px;
+		height: 500px;
+		position: absolute;
+	}
+
+	#front {
+		transform: translateZ(250px) rotateY(180deg);
+	}
+
+	#back {
+		transform: translateZ(-250px);
+	}
+
+	#left {
+		transform: rotateY(90deg) translateX(-250px);
+		transform-origin: left;
+	}
+
+	#right {
+		transform: rotateY(-90deg) translateX(250px);
+		transform-origin: right;
+	}
+
+	#top {
+		transform: rotateX(-90deg) translateY(-250px);
+		transform-origin: top;
+	}
+
+	#bottom {
+		transform: rotateX(90deg) translateY(250px);
+		transform-origin: bottom;
+	}
+
+	#front, #back, #top, #bottom, #left, #right {
+		background-image: url(Sky.jpg);
+	}
+</style>
+
+<body
+	onload="alert('You are free falling. Find the Jetpack and click it to before it is too late. Fly away with the jetpack before 10 seconds is up, or you will go splat. Move your cursor to change the viewing angle. Good luck...')">
+	<div id="mainDiv" draggable="true">
+		<div id="boxDiv">
+			<div id="top"></div>
+			<div id="bottom"></div>
+			<div id="front"></div>
+			<div id="back"></div>
+			<div id="left"><img src="./Jetpack.png" id="jetpack"></div>
+			<div id="right"></div>
+			
+			<script>
+				var world = document.getElementById('boxDiv');
+				var x;
+				var y;
+				document.addEventListener('mousemove', function (e) {
+					x = e.clientX;
+					y = e.clientY;
+					y = -y;
+					world.style.transform = "translateZ(600px) rotatex(" + y + "deg) rotateY(" + x + "deg)";
+				});
+				const timeout = setTimeout(countdown, 10000);
+				document.getElementById('jetpack').addEventListener('click', function () {
+					alert("Great job! Now press space to fly away to safety.");
+					document.addEventListener('keypress', function (e) {
+						if(e.keyCode == '32') {
+							clearTimeout(timeout);
+							e.preventDefault();
+							alert("Congrats! You have bested the elements! Enjoy!");
+							let c = confirm("Play secret level?");
+							if(c == true){
+								window.location.href = "5.html";
+							}
+							else{
+							window.close();
+							}
+						}
+					});
+				});
+				function countdown() {
+					{
+					alert("Game Over!");
+					let retry = confirm("Try again?");
+					if (retry == true) {
+						location.reload();
+					}
+					else {
+						window.close();
+					}
+				}
+				}
+			</script>
+		</div>
+	</div>
+</body>
+
+</html>

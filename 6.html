@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>3D Escape Room Level 6</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+	<script src="script.js"></script>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<style>
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+	}
+
+	.explode {
+		height: 50px;
+		width: 50px;
+		position: absolute;
+		z-index: 1;
+	}
+
+
+
+	body {
+		overflow: hidden;
+		background-image: url(metal.png)
+	}
+
+	#mainDiv {
+		width: 500px;
+		height: 500px;
+		margin: 200px auto;
+		perspective: 800px;
+		position: relative;
+	}
+
+	#boxDiv {
+		width: 500px;
+		height: 500px;
+		border: solid 3pt black;
+		transform-style: preserve-3d;
+		transform: translateZ(6000px);
+	}
+
+	#boxDiv div {
+		width: 500px;
+		height: 500px;
+		position: absolute;
+		z-index: -1;
+	}
+
+	#front {
+		transform: translateZ(250px);
+	}
+
+	#back {
+		transform: translateZ(-250px);
+	}
+
+	#left {
+		transform: rotateY(90deg) translateX(-250px);
+		transform-origin: left;
+	}
+
+	#right {
+		transform: rotateY(-90deg) translateX(250px);
+		transform-origin: right;
+	}
+
+	#top {
+		transform: rotateX(-90deg) translateY(-250px);
+		transform-origin: top;
+	}
+
+	#progress {
+		color: red;
+		position: absolute;
+		z-index: 1;
+		left: 100px;
+		transform: translateY(-200px);
+	}
+
+	#sh {
+		position: absolute;
+		z-index: 1;
+		transform: translateY(-200px);
+	}
+
+
+
+	#bottom {
+		transform: rotateX(90deg) translateY(250px);
+		transform-origin: bottom;
+
+	}
+
+	#front, #back, #top, #bottom, #left, #right {
+		background-image: url(metal.png);
+		position: absolute;
+		height: 500px;
+		width: 500px;
+	}
+</style>
+
+<body
+	onload="alert('Welcome to the boss battle. Click the soldier to fight your way out of the metal prison! You have 10 minutes. Good Luck! WARNING: fireballs are deadly...'); alert('WW2 Panzergrenadier 2k (CC0) (https://skfb.ly/oAGuZ) by britdawgmasterfunk is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).')">
+	<p id="sh">Boss Health:</p><progress id="progress" max="25" value="25">
+	</progress>
+	<div id="mainDiv" draggable="true">
+		<div id="boxDiv">
+			<div id="top"></div>
+			<div id="bottom"></div>
+			<div id="front"></div>
+			<div id="back"></div>
+			<div id="left"></div>
+			<div id="right"></div>
+			<model-viewer src="soldier.glb" id="soldier"></model-viewer>
+
+			<script>
+				var deaths = 0;
+				var b = Math.floor(Math.random() * 500);
+				var a = Math.floor(Math.random() * 500);
+				var c = Math.floor(Math.random() * 500);
+				setInterval(function () {
+					setTimeout(function () {
+						var fireball = document.createElement("img");
+						fireball.src = "explosion.png";
+						b = Math.floor(Math.random() * 500);
+						a = Math.floor(Math.random() * 500);
+						c = Math.floor(Math.random() * 500);
+						fireball.style.transform = "translateX(" + a + "px) translateY(" + b + "px) translateZ(" + c + "px)";
+						fireball.classList.add("explode");
+						fireball.onclick = () => {
+							deaths++;
+
+						};
+						document.getElementById('boxDiv').appendChild(fireball);
+					}, 6000);
+				}, 1000);
+				var clicks = 0;
+				var world = document.getElementById('boxDiv');
+				var x;
+				var y;
+				document.addEventListener('mousemove', function (e) {
+					x = e.clientX;
+					y = e.clientY;
+					y = -y;
+					world.style.transform = "translateZ(600px) rotatex(" + y + "deg) rotateY(" + x + "deg)";
+				});
+				document.getElementById('soldier').onload = () => {
+					setTimeout(function () {
+						alert("Game Over!");
+						let retry = confirm("Try again?");
+						if (retry == true) {
+							location.reload();
+						}
+						else {
+							window.close();
+						}
+					}, 600000);
+				};
+							if (deaths > 10) {
+								alert("You Died");
+								window.reload();
+							}
+				var clicks = 0;
+
+
+				var health = document.getElementById('progress');
+				health.style.height = "100px";
+				health.style.width = "500px";
+				var s = Math.floor(Math.random() * 250);
+				var b = Math.floor(Math.random() * 250);
+				var d = Math.floor(Math.random() * 250);
+
+				document.getElementById('soldier').addEventListener('click', function () {
+					s = Math.floor(Math.random() * 250);
+					b = Math.floor(Math.random() * 250);
+					d = Math.floor(Math.random() * 250);
+					document.getElementById('soldier').style.transform = "translateX(" + s + "px) translateY(" + b + "px) translateZ(" + d + "px)";
+					clicks++;
+					console.log(clicks);
+					health.value--;
+					if (clicks >= 25) {
+						alert("Congrats! You have bested the the final boss level! Have a nice day!");
+						time();
+						window.location.href = "author.html";
+					}
+				});
+			</script>
+		</div>
+	</div>
+</body>
+
+</html>

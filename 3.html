@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>3D Escape Room Level 3</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+	<audio src="Boom.mp3" id="boom"></audio>
+<style>
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+	}
+
+	body {
+		overflow: hidden;
+	}
+
+	#mainDiv {
+		width: 500px;
+		height: 500px;
+		margin: 200px auto;
+		perspective: 800px;
+	}
+
+	#boxDiv {
+		width: 500px;
+		height: 500px;
+		border: solid 3pt black;
+		transform-style: preserve-3d;
+		transform: translateZ(6000px);
+	}
+
+	#boxDiv div {
+		width: 500px;
+		height: 500px;
+		position: absolute;
+	}
+	#front {
+		transform: translateZ(250px) rotateY(180deg);
+	}
+
+	#back {
+		transform: translateZ(-250px);
+	}
+
+	#left {
+		transform: rotateY(90deg) translateX(-250px);
+		transform-origin: left;
+	}
+
+	#right {
+		transform: rotateY(-90deg) translateX(250px);
+		transform-origin: right;
+	}
+
+	#top {
+		transform: rotateX(-90deg) translateY(-250px);
+		transform-origin: top;
+	}
+
+	#bottom {
+		transform: rotateX(90deg) translateY(250px);
+		transform-origin: bottom;
+	}
+	#front, #back, #top, #bottom, #left, #right{
+		background-image: url(Lava.jpg);
+	}
+</style>
+
+<body onload="alert('You are now in a Volcano. Find the Goomba and click them to kill them to move on to step 2. Escape before 1 minute is up, or you will burn. Move your cursor to move. Good luck...')">
+	<div id="mainDiv">
+		<div id="boxDiv">
+			<div id="top"></div>
+			<div id="bottom"></div>
+			<div id="front"></div>
+			<div id="back"></div>
+			<div id="left"></div>
+			<div id="right"></div>
+			<img src="Goomba.png" id="enemy">
+			<script>
+				var goomba = document.getElementById('enemy');
+				goomba.location = Math.random();
+				
+				goomba.addEventListener('click', function () {
+					alert("Good job! Now click the lava walls to get out. They have now hardened. Break them with your old friend: the pickaxe. Click to use it!");
+					goomba.style.display = "none";
+				});
+				var world = document.getElementById('boxDiv');
+				var x;
+				var y;
+				document.addEventListener('mousemove', function (e) {
+					x = e.clientX;
+					y = e.clientY;
+					y = -y;
+					world.style.transform = "translateZ(600px) rotateX(" + y + "deg) rotateY(" + x + "deg)";	
+				});
+
+					setTimeout(function (){
+						alert("Game Over!");
+						let retry = confirm("Try again?");
+						if(retry == true){
+							location.reload();
+						}
+						else{
+							window.close();
+						}
+					}, 60000);
+				var clicks = 0
+				document.addEventListener('click', function (){
+					clicks++;
+					if(clicks === 75){
+
+							alert("Great Job! You Completed level 3!");
+						let l4 = confirm("Play level 4?");
+						if(l4 == true){
+							location.href = "4.html";
+						}
+						else{
+						let again = confirm("Play again?");
+						if(again == true){
+							location.reload();
+						}
+						else{
+							alert("Bye");
+							window.close();
+						}
+						}
+					}
+				});						
+			</script>
+			<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+			<script type="module">
+				
+			</script>
+		</div>
+	</div>
+</body>
+</html>

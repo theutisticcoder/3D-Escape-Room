@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>3D Escape Room Level 1</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+		<script src="script.js"></script>
+	<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+	<audio src="Boom.mp3" id="boom"></audio>
+<style>
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+	}
+
+	body {
+		background: black;
+		overflow: hidden;
+	}
+
+	#mainDiv {
+		width: 500px;
+		height: 500px;
+		margin: 200px auto;
+		perspective: 800px;
+	}
+
+	#boxDiv {
+		width: 500px;
+		height: 500px;
+		border: solid 3pt black;
+		transform-style: preserve-3d;
+		transform: translateZ(6000px);
+	}
+
+	#boxDiv div {
+		width: 500px;
+		height: 500px;
+		position: absolute;
+	}
+
+	#front {
+		transform: translateZ(250px) rotateY(180deg);
+	}
+
+	#back {
+		transform: translateZ(-250px);
+	}
+
+	#left {
+		transform: rotateY(90deg) translateX(-250px);
+		transform-origin: left;
+	}
+
+	#right {
+		transform: rotateY(-90deg) translateX(250px);
+		transform-origin: right;
+	}
+
+	#top {
+		transform: rotateX(-90deg) translateY(-250px);
+		transform-origin: top;
+	}
+
+	#bottom {
+		transform: rotateX(90deg) translateY(250px);
+		transform-origin: bottom;
+	}
+
+	img {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+
+<body onload="alert('Find the Pickaxe to move on to step 2. Escape before 1 minute is up. Move the cursor to change your angle of view.  Good luck...')">
+	<div id="mainDiv">
+		<div id="boxDiv">
+			<div id="top"><img src="Grass1.png" /></div>
+			<div id="bottom"><img src="Dirt.jpg"/></div>
+			<div id="front"><img src="Grass1.png" /></div>
+			<div id="back"><img src="Grass1.png" /></div>
+			<div id="left"><img src="Grass1.png" /></div>
+			<div id="right"><img src="Grass1.png" /></div>
+			
+			<model-viewer src="pickaxe.glb" autorotate camera-controls id="model" onclick="step2()" draggable="true" style="height: 100px; width: 100px;"></model-viewer>
+			<script>
+				var world = document.getElementById('boxDiv');
+				var x;
+				var y;
+				document.addEventListener('mousemove', function (e) {
+					x = e.clientX;
+					y = e.clientY;
+					y = -y;
+					world.style.transform = "translateZ(600px) rotatex(" + y + "deg) rotateY(" + x + "deg)";
+				});
+					setTimeout(function (){
+						alert("Game Over!");
+						let retry = confirm("Try again?");
+						if(retry == true){
+							location.reload();
+						}
+						else{
+							window.close();
+						}
+					}, 60000);
+				function step2(){
+					alert("Pickaxe Collected.");
+					alert("Good Job! Use the pickaxe to escape your dirt prison. Click anywhere on the walls to break them with the pickaxe...keep clicking to break the hard dirt. ");
+					let model = document.getElementById('model');
+					model.style.display = "none";					
+				var clicks = 0
+				document.addEventListener('click', function (){
+					clicks++;
+					if(clicks === 20){
+						let explosion = document.getElementById('expl');
+						explosion.style.display = 'block';
+						let boom = document.getElementById('boom');
+						boom.play();
+						setTimeout(function(){
+							alert("Great Job! You Completed level 1!");
+							let next = confirm("Play Level 2?");
+							if(next == true){
+								window.location.href = "2.html";
+							}
+							else{
+								let again = confirm("Play again?");
+						if(again == true){
+							location.reload();
+						}
+						else{
+							alert("Bye");
+							window.close();
+						}
+						
+							
+							}
+							}, 2000);
+				}
+				});
+				}
+			</script>
+			<img src="explosion.png" id="expl" style="display: none">
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>3D Escape Room Level 5</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist model-viewer.min.js"></script>
+	<script nomodule src="https://unpkg.com/@google/model-viewer@0.5.1/dist/model-viewer-legacy.js"> </script>
+<style>
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+	}
+
+	body {
+		overflow: hidden;
+		background-image: url(Ice.png)
+	}
+
+	#mainDiv {
+		width: 500px;
+		height: 500px;
+		margin: 200px auto;
+		perspective: 800px;
+		position: relative;
+	}
+
+	#boxDiv {
+		width: 500px;
+		height: 500px;
+		border: solid 3pt black;
+		transform-style: preserve-3d;
+		transform: translateZ(6000px);
+	}
+
+	#boxDiv div {
+		width: 500px;
+		height: 500px;
+		position: absolute;
+	}
+
+	#front {
+		transform: translateZ(250px);
+		animation: 30s move1;
+		animation-iteration-count: 1;
+	}
+
+	#back {
+		transform: translateZ(-250px);
+				animation: 30s move2 linear;
+		animation-iteration-count: 1;
+	}
+
+	#left {
+		transform: rotateY(90deg) translateX(-250px);
+		transform-origin: left;
+	}
+
+	#right {
+		transform: rotateY(90deg) translateX(250px);
+		transform-origin: right;
+	}
+
+	#top {
+		transform: rotateX(-90deg) translateY(-250px);
+		transform-origin: top;
+	}
+
+	#bottom {
+		transform: rotateX(-90deg) translateY(250px);
+		transform-origin: bottom;
+
+	}
+
+	#front, #back, #top, #bottom, #left, #right {
+		background-image: url(Ice.png);
+		position: absolute;
+	}
+	@keyframes move1 {
+		0%{transform: translateZ(250px);}
+		100%{transform: translateZ(5px);}
+	}
+	@keyframes move2 {
+		0%{transform: translateZ(-250px);}
+		100%{transform: translateZ(-5px);}
+	}
+</style>
+
+<body
+	onload="alert('Welcome to the finale. there are 2 ice walls that will crush you in 30 seconds. Find the Pickaxe. Quick! Good luck!')">
+	<div id="mainDiv" draggable="true">
+		<div id="boxDiv">
+			<div id="top"></div>
+			<div id="bottom"></div>
+			<div id="front"></div>
+			<div id="back"></div>
+			<div id="left"><img src="./Pickaxe.png" height="200px" width="200px" id="jetpack"></div>
+			<div id="right"></div>
+			
+			<script>
+				var clicks = 0;
+				var world = document.getElementById('boxDiv');
+				var x;
+				var y;
+				document.addEventListener('mousemove', function (e) {
+					x = e.clientX;
+					y = e.clientY;
+					y = -y;
+					world.style.transform = "translateZ(600px) rotatex(" + y + "deg) rotateY(" + x + "deg)";
+				});
+				setTimeout(function () {
+					alert("Game Over!");
+					let retry = confirm("Try again?");
+					if (retry == true) {
+						location.reload();
+					}
+					else {
+						window.close();
+					}
+				}, 30000);
+				document.getElementById('jetpack').addEventListener('click', function () {
+					alert("Great job! Now mine the ice with the pickaxe!");
+					document.addEventListener('click', function (e) {
+						clicks++;
+						if(clicks === 50){
+							alert("Congrats! You have bested the the secret level! Enjoy!");
+							location.href = "6.html";
+						}
+					});
+				});
+			</script>
+		</div>
+	</div>
+</body>
+
+</html>

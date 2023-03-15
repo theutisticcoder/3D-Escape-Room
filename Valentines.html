@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>3D Escape Room Valentines Day</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<audio src="Boom.mp3" id="boom"></audio>
+<style>
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+	}
+
+	body {
+		background: black;
+		overflow: hidden;
+	}
+
+	#mainDiv {
+		width: 500px;
+		height: 500px;
+		margin: 200px auto;
+		perspective: 800px;
+	}
+
+	#boxDiv {
+		width: 500px;
+		height: 500px;
+		border: solid 3pt black;
+		transform-style: preserve-3d;
+		transform: translateZ(6000px);
+	}
+
+	#boxDiv div {
+		width: 500px;
+		height: 500px;
+		position: absolute;
+	}
+
+	#front {
+		transform: translateZ(250px) rotateY(180deg);
+	}
+
+	#back {
+		transform: translateZ(-250px);
+	}
+
+	#left {
+		transform: rotateY(90deg) translateX(-250px);
+		transform-origin: left;
+	}
+
+	#right {
+		transform: rotateY(-90deg) translateX(250px);
+		transform-origin: right;
+	}
+
+	#top {
+		transform: rotateX(-90deg) translateY(-250px);
+		transform-origin: top;
+	}
+
+	#bottom {
+		transform: rotateX(90deg) translateY(250px);
+		transform-origin: bottom;
+	}
+
+	img {
+		width: 500px;
+		height: 500px;
+	}
+</style>
+
+<body
+	onload="alert('Find the heart pieces to move on to step 2. Escape before 1 minute is up. Move the cursor to change your angle of view.  Good luck...')">
+	<div id="mainDiv">
+		<div id="boxDiv">
+			<div id="top"><img src="Grass6.png" /></div>
+			<div id="bottom"><img src="Dirt.jpg" /></div>
+			<div id="front"><img src="Grass2.png" /></div>
+			<div id="back"><img src="Grass3.png" /></div>
+			<div id="left"><img src="Grass4.png" /></div>
+			<div id="right"><img src="Grass5.png" /></div>
+			<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+				import '@google/model-viewer';
+				let model = document.getElementById('model');
+			</script>
+			<img onclick="step2();" src="Heart.png" style="height: 50px; width: 50px;" id="model">
+			<script>
+				var world = document.getElementById('boxDiv');
+				var x;
+				var y;
+				document.addEventListener('mousemove', function (e) {
+					x = e.clientX;
+					y = e.clientY;
+					y = -y;
+					world.style.transform = "translateZ(600px) rotatex(" + y + "deg) rotateY(" + x + "deg)";
+				});
+				setTimeout(function () {
+					alert("Game Over!");
+					let retry = confirm("Try again?");
+					if (retry == true) {
+						location.reload();
+					}
+					else {
+						window.close();
+					}
+				}, 60000);
+				function step2() {
+					alert("Heart Piece Collected. Find the other.");
+					model.style.transform = "translateX(" + Math.floor(Math.random() * 100) + "px)"
+					model.onclick = () => {
+						alert("Good Job! Press space to rebuild the broken heart ");
+						document.onkeydown = (e) => {
+							if(e.key == " "){
+													let explosion = document.getElementById('expl');
+						explosion.style.display = 'block';
+						let boom = document.getElementById('boom');
+						boom.play();
+						setTimeout(function () {
+							alert("Great Job! You Completed heart!");
+
+								let again = confirm("Play again?");
+								if (again == true) {
+									location.reload();
+								}
+								else {
+									alert("Bye");
+									window.close();
+								}
+
+
+						}, 2000);
+							}
+						};
+					};
+				}
+			</script>
+			<img src="explosion.png" id="expl" style="display: none">
+		</div>
+	</div>
+</body>
+
+</html>
